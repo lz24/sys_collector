@@ -270,24 +270,21 @@ class CollectorBase(object):
                 net.append(intf)
         return net
 
-    def get_network_flow(self,device="bond0"):
+    def get_network_flow(self,device="enp0s3"):
         net_flow = self._network_stat(device)
         time.sleep(1)
         net1_flow = self._network_stat(device)
+        #n_f = [round(float(net1_flow[i] - net_flow[i])/1024/1024,2) for i in range(len(net_flow))]
+        #return n_f
 
-        n_f = [round(float(net1_flow[i] - net_flow[i])/1024/1024,2) for i in range(len(net_flow))]
-
-        return n_f
-
-        #try:
-        #    for i in range(len(net_flow)):
-        #        for k,v in net_flow[i].items():
-        #            for p,ve in v.items():
-        #                if net1_flow[i][k].get(p) and str(ve).isalnum():
-        #                    net_flow[i][k][p] = net1_flow[i][k][p] - net_flow[i][k][p]
-        #
-        #except Exception :
-        #    self.info["net_flow"] = None
+        try:
+            for i in range(len(net_flow)):
+                for k,v in net_flow[i].items():
+                    for p,ve in v.items():
+                        if net1_flow[i][k].get(p) and str(ve).isalnum():
+                            net_flow[i][k][p] = net1_flow[i][k][p] - net_flow[i][k][p]
+        except Exception :
+            self.info["net_flow"] = None
 
     def get_app_jmx(self):
         app_info = self.get_app_info()
