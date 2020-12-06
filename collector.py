@@ -440,8 +440,6 @@ class CollectorBase(object):
 
     def get_cpu_info(self):
         self.info['cpu'] = {}
-        #self.info['cpu']['datetime'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        #self.info['cpu']['ipaddress'] = get_ip()
         self.info['cpu']['cpu_load_1'] = self._get_cpu_load()[0]
         self.info['cpu']['cpu_load_5'] = self._get_cpu_load()[1]
         self.info['cpu']['cpu_load_15'] = self._get_cpu_load()[2]
@@ -634,8 +632,6 @@ float(statvfs_result.f_frsize*(statvfs_result.f_bavail))//1024//1024
                 interfaces[device]['receivembytes'] = self.get_network_flow(device)[0]
                 interfaces[device]['transmitmbytes'] = self.get_network_flow(device)[1]
             self.info['interfaces'] = interfaces
-            #self.info['interfaces']['datetime'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            #self.info['interfaces']['ipaddress'] = get_ip()
 
 class CollectorServices(CollectorBase):
     def __init__(self):
@@ -647,104 +643,37 @@ class CollectorServices(CollectorBase):
     def _compare(self,name):
         return "True" if sysctlt['%s'%name] in get_file_lines(sysctlpath[name]) else  "False"
 
-    def _ntp(self):
-        ntp_res = None
-        chrony = imsh(cmd='ps -ef |grep chronyd|grep -v grep')
-        for line in get_file_content('/var/spool/cron/root','').splitlines():
-            try:
-                ntp_res = re.search(NTP_CRON,line).group(0)
-            except:
-                pass
-        return "ok" if (ntp_res and chrony) else "no"
-
-    def _zabbix_agent_ps(self):
-        raw = imsh(cmd='ps -ef |grep zabbix-agent|grep -v grep')
-        if raw:
-            return "ok"
-        else:
-            return "no"
-
-    def _falcon_agent_ps(self):
-        raw = imsh(cmd='ps -ef |grep falcon-agent |grep -v grep')
-        if raw:
-            return "ok"
-        else:
-            return "no"
 
     def _init_install(self):
         install_list = []
         opt_dir = imsh(cmd='ls /opt')
-        finance_dir = imsh(cmd='ls  /home/finance/')
-        finance_app_dir = imsh(cmd='ls /home/finance/App')
+        ymfly_app_dir = imsh(cmd='ls %s'%APP_PATH)
         try:
             for name in opt_dir:
-                if  re.sub('\n','',name) in ['jdk1.7.0_79','tomcat7.0.78',
-                                            'jdk1.8.0_112','nginx','pinpoint-agent','tomcat8.0.21','zabbix-agent']:
+                if  re.sub('\n','',name) in ['jdk1.8.0_112','nginx','pinpoint-agent','tomcat8.0.21','zabbix-agent']:
                     install_list.append(re.sub('\n','',name))
-            for name in finance_dir:
-                if re.sub('\n','',name) in ['auto-add-tomcat8']:
-                    install_list.append(re.sub('\n','',name))
-            for name in finance_app_dir:
-                if re.sub('\n','',name) in ['autodeploy_agent','ymfly-falcon','ymfly-falcon-agent','falcon-agent-lj']:
+            for name in ymfly_app_dir:
+                if re.sub('\n','',name) in ['autodeploy_agent','ymfly-falcon-agent']:
                     install_list.append(re.sub('\n','',name))
         except:
              pass
         return install_list
 
-    def _autodeploy_ps(self):
-        raw = imsh(cmd='ps -ef |grep autodeploy_agent|grep -v grep')
-        if raw:
-            return "ok"
-        else:
-            return "no"
-
-    def _nginx_ps(self):
-        raw = imsh(cmd='ps -ef |grep nginx|grep -v grep')
-        if raw:
-            return "ok"
-        else:
-            return "no"
-    def _filebeat_ps(self):
-        raw = imsh(cmd='ps -ef |grep filebeat|grep -v grep')
-        if raw:
-            return "ok"
-        else:
-            return "no"
-
-    def _rsyslog_ps(self):
-        raw = imsh(cmd='ps -ef |grep rsyslog|grep -v grep')
-        if raw:
-            return "ok"
-        else:
-            return "no"
-
-
-
+    def _chk_service(self,service_list):
+        _tmp_dict = {}
+        for i in service_list:
+            raw = imsh(cmd='ps -ef |grep %s|grep -v grep'%i)
+            if raw:
+                _tmp_dict['%s'%i] = 'ok'
+            else:
+                _tmp_dict['%s'%i] = 'no'
+        return _tmp_dict
 
 
     def get_service_info(self):
-        self.info['services'] = {}
-        self.ntp = self._ntp()
-        self.zabbix = self._zabbix_agent_ps()
-        self.autodeploy = self._autodeploy_ps()
-        self.rsyslog = self._rsyslog_ps()
-        self.filebeat = self._filebeat_ps()
-        self.nginx = self._nginx_ps()
-        self.sysctl = self._get_check_sysctl()
-        self.falcon = self._falcon_agent_ps()
-        self.info['services'] = {
-                                  'ntp':self.ntp,
-                                  'zabbix':self.zabbix,
-                                  'autodeploy':self.autodeploy,
-                                  'rsyslog':self.rsyslog,
-                                  'filebeat':self.filebeat,
-                                  'nginx':self.nginx,
-                                  'sysctl':self.sysctl,
-                                  'falcon':self.falcon
+        service_list=['chronyd','autodeploy','rsyslog','filebeat','nginx','falcon']
+        self.info['services'] = self._chk_service(service_list) 
 
-                                }
-        #self.info['services']['datetime'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        #self.info['services']['ipaddress'] = get_ip()
 
     def _get_check_sysctl(self):
         self.info['sysctl']={}
@@ -756,8 +685,6 @@ class CollectorServices(CollectorBase):
             return 'no'
         else:
             return 'ok'
-        #self.info['sysctl']['datetime'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        #self.info['sysctl']['ipaddress'] = get_ip()
 
 
 def _post(url,data):
@@ -769,7 +696,7 @@ def _post(url,data):
 
 if  __name__ == '__main__':
     a = CollectorBase()
-    #b = CollectorServices()
-    #c = dict(a.info,**b.info)
-    print json.dumps(a.info,indent=4)
+    b = CollectorServices()
+    c = dict(a.info,**b.info)
+    print json.dumps(c,indent=4)
     
