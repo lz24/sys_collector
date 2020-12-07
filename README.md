@@ -3,11 +3,11 @@
 ___
 {
     "memory_mb": {
-        "avail_percent": 87.27896542623384, 
+        "avail_percent": 88.41382950646609, 
         "total": 3789.0, 
-        "use_percent": 12.721034573766165, 
-        "free": 3307.0, 
-        "used": 482.0
+        "use_percent": 11.586170493533913, 
+        "free": 3350.0, 
+        "used": 439.0
     }, 
     "sys": {
         "kernel": "3.10.0-1160.el7.x86_64", 
@@ -17,12 +17,12 @@ ___
             }
         ], 
         "dist": "centos7.9.2009", 
-        "uptime_seconds": 27656, 
+        "uptime_seconds": 14120, 
         "python": "2.7.5", 
         "arch": "x86_64", 
         "glibc": "2.2.5", 
         "hostname": "localhost.localdomain", 
-        "datetime": "2020-12-06 22:47:22", 
+        "datetime": "2020-12-07 15:26:24", 
         "dns": "192.168.1.1", 
         "ipaddress": "192.168.1.248", 
         "app": [
@@ -39,7 +39,7 @@ ___
     }, 
     "env": {
         "LANG": "zh_CN.UTF-8", 
-        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin", 
+        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/go/bin:/root/bin", 
         "HISTSIZE": "1000"
     }, 
     "mounts": {
@@ -54,10 +54,10 @@ ___
             "fstype": "xfs"
         }, 
         "/": {
-            "use_percent": 11.274346132442961, 
-            "avail_percent": 88.72565386755704, 
+            "use_percent": 14.752365052865887, 
+            "avail_percent": 85.24763494713412, 
             "size_total": 17970.0, 
-            "size_available": 15944.0, 
+            "size_available": 15319.0, 
             "device": "/dev/mapper/centos-root", 
             "mount": "/", 
             "options": "rw,seclabel,relatime,attr2,inode64,noquota", 
@@ -98,7 +98,30 @@ ___
     }, 
     "interfaces": {
         "docker0": {
-            "macaddress": "02:42:7f:55:09:f7", 
+            "macaddress": "02:42:1d:c6:3e:68", 
+            "net_flow": [
+                {
+                    "docker0:": {
+                        "ReceiveFrames": 0, 
+                        "TransmitErrs": 0, 
+                        "ReceiveDrop": 0, 
+                        "ReceiveBytes": 0, 
+                        "TransmitCompressed": 0, 
+                        "TransmitFrames": 0, 
+                        "ReceiveMulticast": 0, 
+                        "ReceivePackets": 0, 
+                        "ReceiveCompressed": 0, 
+                        "TransmitFifo": 0, 
+                        "TransmitPackets": 0, 
+                        "device": "docker0:", 
+                        "TransmitBytes": 0, 
+                        "TransmitMulticast": 0, 
+                        "ReceiveErrs": 0, 
+                        "TransmitDrop": 0, 
+                        "ReceiveFifo": 0
+                    }
+                }
+            ], 
             "interfaces": [], 
             "mtu": 1500, 
             "active": false, 
@@ -106,10 +129,33 @@ ___
             "stp": false, 
             "device": "docker0", 
             "type": "bridge", 
-            "id": "8000.02427f5509f7"
+            "id": "8000.02421dc63e68"
         }, 
         "enp0s3": {
             "macaddress": "08:00:27:c0:39:58", 
+            "net_flow": [
+                {
+                    "enp0s3:": {
+                        "ReceiveFrames": 0, 
+                        "TransmitErrs": 0, 
+                        "ReceiveDrop": 0, 
+                        "ReceiveBytes": 231756561, 
+                        "TransmitCompressed": 0, 
+                        "TransmitFrames": 0, 
+                        "ReceiveMulticast": 462, 
+                        "ReceivePackets": 196997, 
+                        "ReceiveCompressed": 0, 
+                        "TransmitFifo": 0, 
+                        "TransmitPackets": 62521, 
+                        "device": "enp0s3:", 
+                        "TransmitBytes": 5997484, 
+                        "TransmitMulticast": 0, 
+                        "ReceiveErrs": 0, 
+                        "TransmitDrop": 0, 
+                        "ReceiveFifo": 0
+                    }
+                }
+            ], 
             "speed": 1000, 
             "pciid": "0000:00:03.0", 
             "mtu": 1500, 
@@ -120,6 +166,29 @@ ___
         }, 
         "enp0s8": {
             "macaddress": "08:00:27:fa:32:32", 
+            "net_flow": [
+                {
+                    "enp0s8:": {
+                        "ReceiveFrames": 0, 
+                        "TransmitErrs": 0, 
+                        "ReceiveDrop": 0, 
+                        "ReceiveBytes": 43853, 
+                        "TransmitCompressed": 0, 
+                        "TransmitFrames": 0, 
+                        "ReceiveMulticast": 0, 
+                        "ReceivePackets": 145, 
+                        "ReceiveCompressed": 0, 
+                        "TransmitFifo": 0, 
+                        "TransmitPackets": 119, 
+                        "device": "enp0s8:", 
+                        "TransmitBytes": 22610, 
+                        "TransmitMulticast": 0, 
+                        "ReceiveErrs": 0, 
+                        "TransmitDrop": 0, 
+                        "ReceiveFifo": 0
+                    }
+                }
+            ], 
             "speed": 1000, 
             "pciid": "0000:00:08.0", 
             "mtu": 1500, 
@@ -131,7 +200,7 @@ ___
     }, 
     "init_soft": [], 
     "cpu": {
-        "idel": 273, 
+        "idel": 139, 
         "cpu_load_1": 0.0, 
         "cpu_load_15": 0.05, 
         "cpu_load_5": 0.01, 

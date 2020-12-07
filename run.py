@@ -16,18 +16,18 @@ import datetime
 import random
 import urllib2
 
-sys.path.append('/usr/local/m-agent')
+sys.path.append('/usr/local/sys_collector')
 try:
-    logging.config.fileConfig("/usr/local/m-agent/m-agent.conf")
-    log = logging.getLogger("m-agent")
+    logging.config.fileConfig("/usr/local/sys_collector/sys_collector.conf")
+    log = logging.getLogger("sys_collector")
     cf = ConfigParser.ConfigParser()
-    cf.read('/usr/local/m-agent/m-agent.conf')
+    cf.read('/usr/local/sys_collector/sys_collector.conf')
 except:
     log.error('配置文件读取错误!')
     sys.exit(0)
 
 try:
-    from m_collector import collector as c
+    from sys_collector import collector as c
 
 except:
     log.error('初始化调用collector错误!')
